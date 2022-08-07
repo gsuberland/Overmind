@@ -1,5 +1,6 @@
 using System.Net;
 using System.Net.Http;
+using System.Text;
 using log4net;
 using Overmind.Config;
 
@@ -46,6 +47,10 @@ namespace Overmind.Web
             var context = _listener.EndGetContext(result);
             // begin accepting the next connection
             _listener.BeginGetContext(DispatchRequest, null);
+
+            // results will always be UTF-8 encoded JSON
+            context.Response.ContentType = "application/json";
+            context.Response.ContentEncoding = Encoding.UTF8;
 
             // service name is the first part of the URL path
             string serviceName = (context.Request.Url?.Segments?.FirstOrDefault(s => s != "/") ?? "/").TrimEnd('/').ToLower();

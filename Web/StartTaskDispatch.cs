@@ -7,14 +7,14 @@ using Overmind.Tasks;
 
 namespace Overmind.Web
 {
-    class TaskDispatch : IWebDispatch
+    class StartTaskDispatch : IWebDispatch
     {
-        private const string ConfigServiceName = @"task";
+        private const string ConfigServiceName = @"start";
 
         /// <summary>
-        /// Dispatch a task service request.
+        /// Dispatch a start task service request.
         /// </summary>
-        /// <param name="serviceName">Service name. Must be "task".</param>
+        /// <param name="serviceName">Service name. Must be "start".</param>
         /// <param name="context">HTTP context for the request.</param>
         public void Dispatch(string serviceName, HttpListenerContext context)
         {
@@ -28,10 +28,9 @@ namespace Overmind.Web
                 .TrimStart('?')
                 .Split('&', StringSplitOptions.RemoveEmptyEntries)
                 .ToDictionary(p => p.Split('=').First(), p => p.Split('=').Skip(1).FirstOrDefault() ?? "");
+            
             string taskName = (context.Request.Url.Segments.Skip(2).FirstOrDefault() ?? "").TrimEnd('/');
 
-            context.Response.ContentType = "application/json";
-            context.Response.ContentEncoding = Encoding.UTF8;
             TaskInstance task;
             try
             {

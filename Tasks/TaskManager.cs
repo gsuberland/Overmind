@@ -11,6 +11,19 @@ namespace Overmind.Tasks
     {
         private static ConcurrentDictionary<Guid, TaskInstance> _instances = new ConcurrentDictionary<Guid, TaskInstance>();
 
+        public static TaskInstance[] GetInstances()
+        {
+            return _instances.Values.ToArray();
+        }
+
+        public static TaskInstance? GetInstance(Guid id)
+        {
+            TaskInstance? task;
+            if (_instances.TryGetValue(id, out task))
+                return task;
+            return null;
+        }
+
         public static TaskInstance Start(string taskName, Dictionary<string, string> parameters)
         {
             ILog _log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod()?.DeclaringType);
