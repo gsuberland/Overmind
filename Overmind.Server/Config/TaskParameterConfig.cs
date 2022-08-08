@@ -16,7 +16,7 @@ namespace Overmind.Server.Config
         private string[]? _validationFlags { get; set; } 
 
         [JsonIgnore]
-        ParameterValidationFlags ValidationFlags
+        public ParameterValidationFlags ValidationFlags
         {
             get
             {

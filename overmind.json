@@ -19,7 +19,8 @@
             "Parameters": [
                 {
                     "Name": "message",
-                    "ValidationRegex": "^[a-zA-Z0-9 ]+$"
+                    "ValidationRegex": "^[a-zA-Z0-9 ]+$",
+                    "ValidationRules": "FileMustExist"
                 }
             ]
         }

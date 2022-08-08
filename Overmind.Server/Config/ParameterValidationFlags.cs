@@ -5,6 +5,6 @@ namespace Overmind.Server.Config
     [Flags]
     enum ParameterValidationFlags
     {
-        ValidFilePath = 1,
+        FileMustExist = 1,
     }
 }

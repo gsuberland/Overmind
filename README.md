@@ -28,7 +28,8 @@ Rather than synchronously launching ffmpeg from your application, you can set up
   "Parameters": [
     {
       "Name": "inputfile",
-      "ValidationBasePath": "/mnt/media/"
+      "ValidationBasePath": "/mnt/media/",
+      "ValidationRules": "FileMustExist"
     },
     {
       "Name": "inputpath",
@@ -45,6 +46,8 @@ Rather than synchronously launching ffmpeg from your application, you can set up
 This defines a task named `createthumb` that launches ffmpeg, taking parameters named `inputfile`, `inputpath`, and `id`.
 
 The `inputfile` and `inputpath` parameters have a validation base path specified, which ensures that the provided path is within the given directory, to prevent directory traversal attacks.
+
+The `ValidationRules` field on a parameter contains a space-separated list of validation rules. The `inputfile` parameter has the `FileMustExist` rule set (this is currently the only rule that exists!)
 
 The `id` parameter has a validation regex specified, to ensure that the parameter only contains numbers.
 

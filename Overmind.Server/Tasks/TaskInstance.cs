@@ -60,10 +60,12 @@ namespace Overmind.Server.Tasks
                 }
             }
 
-            // validate parameter values via regex where specified
+            
             foreach (KeyValuePair<string, string> parameter in parameters)
             {
                 var parameterConfig = config.Parameters.First(p => p.Name == parameter.Key);
+
+                // validate parameter values via regex where specified
                 if (!string.IsNullOrEmpty(parameterConfig.ValidationRegex))
                 {
                     var regex = new Regex(parameterConfig.ValidationRegex);
@@ -72,15 +74,20 @@ namespace Overmind.Server.Tasks
                         throw new InvalidTaskParameterException(parameter.Key);
                     }
                 }
-            }
 
-            // validate path parameters
-            foreach (KeyValuePair<string, string> parameter in parameters)
-            {
-                var parameterConfig = config.Parameters.First(p => p.Name == parameter.Key);
+                // validate parameters values against base path where specified
                 if (!string.IsNullOrEmpty(parameterConfig.ValidationBasePath))
                 {
                     if (!PathUtils.IsSubPath(parameter.Value, parameterConfig.ValidationBasePath, false))
+                    {
+                        throw new InvalidTaskParameterException(parameter.Key);
+                    }
+                }
+
+                // if the FileMustExist flag is set, ensure the file exists
+                if (parameterConfig.ValidationFlags.HasFlag(ParameterValidationFlags.FileMustExist))
+                {
+                    if (!File.Exists(parameter.Value))
                     {
                         throw new InvalidTaskParameterException(parameter.Key);
                     }
