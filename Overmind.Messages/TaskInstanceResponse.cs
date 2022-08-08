@@ -23,6 +23,7 @@ namespace Overmind.Messages
             int? platformExitCode, 
             ReadOnlyDictionary<string, string> parameters)
         {
+            this.Success = true;
             this.Id = id;
             this.TaskName = taskName;
             this.Status = status;
