@@ -60,6 +60,12 @@ namespace Overmind.Server.Web
 
             try
             {
+                // if the request is not to the token service, a security token MUST be supplied
+                if (serviceName != "token" && !SecurityTokenManager.Validate(context.Request.Headers.Get("Security-Token")))
+                {
+                    throw new InvalidSecurityTokenException();
+                }
+
                 // broadcast this request to all the registered dispatchers
                 foreach (var dispatcher in _dispatchers)
                 {
