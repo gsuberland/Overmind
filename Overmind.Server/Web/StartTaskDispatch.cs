@@ -33,17 +33,43 @@ namespace Overmind.Server.Web
 
             // pull out the arguments from the URL
             // todo: switch to POST and JSON input here!
-            var args = context.Request.Url.Query
+            /*var args = context.Request.Url.Query
                 .TrimStart('?')
                 .Split('&', StringSplitOptions.RemoveEmptyEntries)
                 .ToDictionary(p => p.Split('=').First(), p => p.Split('=').Skip(1).FirstOrDefault() ?? "");
             
             // pull the task name from the query (i.e. /start/taskName -> taskName)
-            string taskName = (context.Request.Url.Segments.Skip(2).FirstOrDefault() ?? "").TrimEnd('/');
+            string taskName = (context.Request.Url.Segments.Skip(2).FirstOrDefault() ?? "").TrimEnd('/');*/
 
-            // start the task!
+            if (context.Request.ContentType != "application/json")
+            {
+                throw new IncorrectContentTypeException();
+            }
+            if (!context.Request.HasEntityBody)
+            {
+                throw new MissingBodyException();
+            }
+
+            var startRequest = JsonSerializer.Deserialize<StartTaskRequest>(
+                context.Request.InputStream,
+                JsonSettings.SerializerOptions);
+            
+            if (startRequest == null)
+            {
+                throw new InvalidRequestParameterException("");
+            }
+            if (string.IsNullOrEmpty(startRequest.Name))
+            {
+                throw new InvalidRequestParameterException("Name");
+            }
+            if (startRequest.Parameters == null)
+            {
+                throw new InvalidRequestParameterException("Parameters");
+            }
+
+            // try to start the task!
             TaskInstance task;
-            task = TaskManager.Start(taskName, args);
+            task = TaskManager.Start(startRequest.Name, startRequest.Parameters);
 
             // we got a task instance, so show it
             context.Response.AddHeader("Location", context.Request.Url.GetLeftPart(UriPartial.Authority) + "/status/" + task.Id.ToString());

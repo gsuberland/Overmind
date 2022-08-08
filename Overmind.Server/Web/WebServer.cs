@@ -69,7 +69,7 @@ namespace Overmind.Server.Web
             try
             {
                 // verify that the correct encoding is being used
-                if (context.Request.ContentEncoding != Encoding.UTF8)
+                if (context.Request.ContentEncoding.WebName != "utf-8")
                 {
                     throw new InvalidRequestEncodingException();
                 }
