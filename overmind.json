@@ -6,7 +6,7 @@
             "Secure": false,
             "Port": 11180,
             "Username": "test",
-            "Password": "test"
+            "Password": "bees"
         }
     ],
     "Tasks": [
@@ -14,11 +14,11 @@
             "Name": "echo",
             "Executable": "cmd.exe",
             "Arguments": [
-                "/C", "echo @@MESSAGE@@"
+                "/C", "echo @@message@@"
             ],
             "Parameters": [
                 {
-                    "Name": "MESSAGE",
+                    "Name": "message",
                     "ValidationRegex": "^[a-zA-Z0-9 ]+$"
                 }
             ]

@@ -26,6 +26,11 @@ namespace Overmind.Server.Web
             ILog _log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod()?.DeclaringType);
             _log.Info($"[{System.Reflection.MethodBase.GetCurrentMethod()?.Name}] Handling dispatched request: {context.Request.RawUrl}");
 
+            if (context.Request.HttpMethod != "POST")
+            {
+                throw new IncorrectVerbException();
+            }
+
             // pull out the arguments from the URL
             // todo: switch to POST and JSON input here!
             var args = context.Request.Url.Query

@@ -14,15 +14,23 @@ namespace Overmind.Server.Web
         private static readonly ILog _log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod()?.DeclaringType);
         private List<IWebDispatch> _dispatchers;
         private readonly HttpListener _listener;
+        private readonly WebServerConfig _config;
 
         public WebServer(WebServerConfig config)
         {
+            _config = config;
             _listener = new HttpListener();
             _dispatchers = new List<IWebDispatch>();
 
             string prefixAddress = $"http{((config.Secure ?? false) ? "s" : "")}://{config.Host ?? "localhost"}:{config.Port}/";
             _log.Info($"[{System.Reflection.MethodBase.GetCurrentMethod()?.Name}] Initialising webserver with listener prefix {prefixAddress}");
             _listener.Prefixes.Add(prefixAddress);
+
+            // if a user & pass are specified, enable Basic Authentication
+            if (!string.IsNullOrEmpty(_config.Username) && !string.IsNullOrEmpty(_config.Password))
+            {
+                _listener.AuthenticationSchemes = AuthenticationSchemes.Basic;
+            }
 
             // register dispatcher types to this server (these handle the requests)
             DispatchManager.Init(this);
@@ -60,6 +68,54 @@ namespace Overmind.Server.Web
 
             try
             {
+                // verify that the correct encoding is being used
+                if (context.Request.ContentEncoding != Encoding.UTF8)
+                {
+                    throw new InvalidRequestEncodingException();
+                }
+
+                // verify that the request is either a GET or a POST (dispatcher can additionally validate this)
+                if (context.Request.HttpMethod != "GET" && context.Request.HttpMethod != "POST")
+                {
+                    throw new IncorrectVerbException();
+                }
+
+                // if a username and password have been configured, requrire auth
+                if (!string.IsNullOrEmpty(_config.Username) && !string.IsNullOrEmpty(_config.Password))
+                {
+                    // get the identity from the request
+                    var identity = context?.User?.Identity as HttpListenerBasicIdentity;
+                    if (identity == null)
+                        throw new AccessDeniedException();
+
+                    // constant-time compare of user & password
+                    byte[] correctUsername = Encoding.UTF8.GetBytes(_config.Username);
+                    byte[] correctPassword = Encoding.UTF8.GetBytes(_config.Password);
+                    
+                    byte[] testUsername = Encoding.UTF8.GetBytes(identity.Name);
+                    byte[] testPassword = Encoding.UTF8.GetBytes(identity.Password);
+
+                    int compare = 0;
+                    int usernameCompareLength = Math.Min(correctUsername.Length, testUsername.Length);
+                    for (int i = 0; i < usernameCompareLength; i++)
+                    {
+                        compare |= correctUsername[i] ^ testUsername[i];
+                    }
+                    compare |= correctUsername.Length ^ testUsername.Length;
+
+                    int passwordCompareLength = Math.Min(correctPassword.Length, testPassword.Length);
+                    for (int i = 0; i < passwordCompareLength; i++)
+                    {
+                        compare |= correctPassword[i] ^ testPassword[i];
+                    }
+                    compare |= correctPassword.Length ^ testPassword.Length;
+
+                    if (compare != 0)
+                    {
+                        throw new AccessDeniedException();
+                    }
+                }
+
                 // if the request is not to the token service, a security token MUST be supplied
                 if (serviceName != "token" && !SecurityTokenManager.Validate(context.Request.Headers.Get("Security-Token")))
                 {

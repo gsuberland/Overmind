@@ -40,7 +40,7 @@ namespace Overmind.Server.Web
             }
 
             DateTime expiry;
-            if (_tokens.TryGetValue(key, out expiry))
+            if (!_tokens.TryGetValue(key, out expiry))
                 return false;
             if (expiry < DateTime.UtcNow - TimeSpan.FromHours(1))
             {

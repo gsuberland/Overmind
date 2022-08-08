@@ -25,6 +25,11 @@ namespace Overmind.Server.Web
             ILog _log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod()?.DeclaringType);
             _log.Info($"[{System.Reflection.MethodBase.GetCurrentMethod()?.Name}] Handling dispatched request: {context.Request.RawUrl}");
 
+            if (context.Request.HttpMethod != "GET")
+            {
+                throw new IncorrectVerbException();
+            }
+
             string taskInstanceIdStr = (context.Request.Url.Segments.Skip(2).FirstOrDefault() ?? "").TrimEnd('/');
             Guid taskInstanceGuid;
             if (!Guid.TryParse(taskInstanceIdStr, out taskInstanceGuid))
