@@ -31,16 +31,6 @@ namespace Overmind.Server.Web
                 throw new IncorrectVerbException();
             }
 
-            // pull out the arguments from the URL
-            // todo: switch to POST and JSON input here!
-            /*var args = context.Request.Url.Query
-                .TrimStart('?')
-                .Split('&', StringSplitOptions.RemoveEmptyEntries)
-                .ToDictionary(p => p.Split('=').First(), p => p.Split('=').Skip(1).FirstOrDefault() ?? "");
-            
-            // pull the task name from the query (i.e. /start/taskName -> taskName)
-            string taskName = (context.Request.Url.Segments.Skip(2).FirstOrDefault() ?? "").TrimEnd('/');*/
-
             if (context.Request.ContentType != "application/json")
             {
                 throw new IncorrectContentTypeException();
