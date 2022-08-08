@@ -3,10 +3,10 @@ using System.Diagnostics;
 using System.Text;
 using System.Text.Json.Serialization;
 using log4net;
-using Overmind.Config;
-using Overmind.Exceptions;
+using Overmind.Server.Config;
+using Overmind.Server.Exceptions;
 
-namespace Overmind.Tasks
+namespace Overmind.Server.Tasks
 {
     static class TaskManager
     {

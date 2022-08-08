@@ -1,6 +1,6 @@
 using log4net;
 
-namespace Overmind.Config
+namespace Overmind.Server.Config
 {
     [Flags]
     enum ParameterValidationFlags

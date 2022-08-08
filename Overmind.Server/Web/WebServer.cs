@@ -3,11 +3,11 @@ using System.Net.Http;
 using System.Text;
 using System.Text.Json;
 using log4net;
-using Overmind.Config;
-using Overmind.Exceptions;
+using Overmind.Server.Config;
+using Overmind.Server.Exceptions;
 using Overmind.Messages;
 
-namespace Overmind.Web
+namespace Overmind.Server.Web
 {
     class WebServer
     {

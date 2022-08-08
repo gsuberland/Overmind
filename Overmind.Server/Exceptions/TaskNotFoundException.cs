@@ -1,4 +1,4 @@
-namespace Overmind.Exceptions
+namespace Overmind.Server.Exceptions
 {
     class TaskNotFoundException : OvermindException
     {

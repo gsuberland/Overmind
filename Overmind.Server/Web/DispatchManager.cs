@@ -1,8 +1,8 @@
 using System.Reflection;
 using log4net;
-using Overmind.Config;
+using Overmind.Server.Config;
 
-namespace Overmind.Web
+namespace Overmind.Server.Web
 {
     static class DispatchManager
     {

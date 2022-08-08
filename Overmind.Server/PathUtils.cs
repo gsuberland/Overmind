@@ -1,4 +1,4 @@
-namespace Overmind
+namespace Overmind.Server
 {
     static class PathUtils
     {

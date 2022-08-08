@@ -1,7 +1,7 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace Overmind.Web
+namespace Overmind.Server.Web
 {
     static class JsonSettings
     {

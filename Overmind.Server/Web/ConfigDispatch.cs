@@ -2,9 +2,9 @@ using System.Net;
 using System.Text;
 using System.Text.Json;
 using log4net;
-using Overmind.Config;
+using Overmind.Server.Config;
 
-namespace Overmind.Web
+namespace Overmind.Server.Web
 {
     class ConfigDispatch : IWebDispatch
     {

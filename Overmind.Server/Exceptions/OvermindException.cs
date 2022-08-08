@@ -1,4 +1,4 @@
-namespace Overmind.Exceptions
+namespace Overmind.Server.Exceptions
 {
     abstract class OvermindException : Exception
     {

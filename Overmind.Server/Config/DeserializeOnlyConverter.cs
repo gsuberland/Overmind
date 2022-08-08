@@ -1,7 +1,7 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace Overmind.Config
+namespace Overmind.Server.Config
 {
     class DeserializeOnlyConverter<T> : JsonConverter<T>
     {

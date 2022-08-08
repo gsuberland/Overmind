@@ -1,8 +1,8 @@
 ﻿using log4net;
-using Overmind.Config;
-using Overmind.Web;
+using Overmind.Server.Config;
+using Overmind.Server.Web;
 
-namespace Overmind
+namespace Overmind.Server
 {
     static class Program
     {

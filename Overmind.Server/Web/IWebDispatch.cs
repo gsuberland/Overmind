@@ -1,9 +1,9 @@
 using System.Net;
 using System.Net.Http;
 using log4net;
-using Overmind.Config;
+using Overmind.Server.Config;
 
-namespace Overmind.Web
+namespace Overmind.Server.Web
 {
     interface IWebDispatch
     {

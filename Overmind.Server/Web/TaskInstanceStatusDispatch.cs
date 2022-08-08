@@ -2,11 +2,11 @@ using System.Net;
 using System.Text;
 using System.Text.Json;
 using log4net;
-using Overmind.Config;
-using Overmind.Exceptions;
-using Overmind.Tasks;
+using Overmind.Server.Config;
+using Overmind.Server.Exceptions;
+using Overmind.Server.Tasks;
 
-namespace Overmind.Web
+namespace Overmind.Server.Web
 {
     class TaskInstanceStatusDispatch : IWebDispatch
     {

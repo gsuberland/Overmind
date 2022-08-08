@@ -1,7 +1,7 @@
 using log4net;
 using System.Text.Json;
 
-namespace Overmind.Config
+namespace Overmind.Server.Config
 {
     class OvermindConfig : IConfigElement
     {

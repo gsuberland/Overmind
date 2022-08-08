@@ -4,11 +4,11 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
 using log4net;
-using Overmind.Config;
-using Overmind.Exceptions;
+using Overmind.Server.Config;
+using Overmind.Server.Exceptions;
 using Overmind.Messages;
 
-namespace Overmind.Tasks
+namespace Overmind.Server.Tasks
 {
     class TaskInstance
     {

@@ -2,7 +2,7 @@ using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
 using log4net;
 
-namespace Overmind.Config
+namespace Overmind.Server.Config
 {
     class TaskParameterConfig : IConfigElement
     {

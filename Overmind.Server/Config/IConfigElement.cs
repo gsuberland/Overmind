@@ -1,4 +1,4 @@
-namespace Overmind.Config
+namespace Overmind.Server.Config
 {
     interface IConfigElement
     {

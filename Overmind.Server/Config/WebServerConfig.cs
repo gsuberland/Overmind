@@ -2,7 +2,7 @@ using log4net;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace Overmind.Config
+namespace Overmind.Server.Config
 {
     class WebServerConfig : IConfigElement
     {
