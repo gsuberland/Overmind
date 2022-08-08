@@ -14,31 +14,31 @@ Rather than synchronously launching ffmpeg from your application, you can set up
 
 ```json
 {
-	"Name": "createthumb",
-	"Executable": "/path/to/ffmpeg",
-	"Arguments": [
-		"-i",
-        "@@inputfile@@",
-        "-ss",
-        "00:00:01.000",
-        "-vframes",
-        "1",
-        "@@inputpath@@/thumb_@@id@@.png"
-	],
-	"Parameters": [
-		{
-			"Name": "inputfile",
-			"ValidationBasePath": "/mnt/media/"
-		},
-        {
-            "Name": "inputpath",
-			"ValidationBasePath": "/mnt/media/"
-        },
-        {
-            "Name": "id",
-            "ValidationRegex": "^[0-9]+$"
-        }
-	]
+  "Name": "createthumb",
+  "Executable": "/path/to/ffmpeg",
+  "Arguments": [
+    "-i",
+    "@@inputfile@@",
+    "-ss",
+    "00:00:01.000",
+    "-vframes",
+    "1",
+    "@@inputpath@@/thumb_@@id@@.png"
+  ],
+  "Parameters": [
+    {
+      "Name": "inputfile",
+      "ValidationBasePath": "/mnt/media/"
+    },
+    {
+      "Name": "inputpath",
+      "ValidationBasePath": "/mnt/media/"
+    },
+    {
+      "Name": "id",
+      "ValidationRegex": "^[0-9]+$"
+    }
+  ]
 }
 ```
 
@@ -58,12 +58,12 @@ Security-Token: 01234567-89ab-cdef-0123-456789abcdef
 
 
 {
-    "Name": "createthumb",
-    "Parameters": {
-    	"inputfile": "/mnt/media/movies/Alien/Alien.mp4",
-    	"inputpath": "/mnt/media/movies/Alien",
-    	"id": "58271"
-    }
+  "Name": "createthumb",
+  "Parameters": {
+    "inputfile": "/mnt/media/movies/Alien/Alien.mp4",
+    "inputpath": "/mnt/media/movies/Alien",
+    "id": "58271"
+  }
 }
 ```
 
@@ -81,9 +81,9 @@ The response will look something like this:
   "PlatformExitCode": null,
   "Status": "running",
   "Parameters": {
-    "inputfile": "/mnt/media/movies/Alien/Alien.mp4",
-    "inputpath": "/mnt/media/movies/Alien",
-    "id": "58271"
+	"inputfile": "/mnt/media/movies/Alien/Alien.mp4",
+	"inputpath": "/mnt/media/movies/Alien",
+	"id": "58271"
   },
   "Success": true
 }
