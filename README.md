@@ -51,7 +51,7 @@ The `id` parameter has a validation regex specified, to ensure that the paramete
 The task can be launched via the HTTP API:
 
 ```http
-HTTP/1.1 POST /start
+POST /start HTTP/1.1
 Host: 127.0.0.1:11180
 Content-Type: application/json
 Security-Token: 01234567-89ab-cdef-0123-456789abcdef
