@@ -35,16 +35,36 @@ namespace Overmind.Web
             try
             {
                 task = TaskManager.Start(taskName, args);
-                JsonSerializer.Serialize<TaskInstance>(context.Response.OutputStream, task);
+                JsonSerializer.Serialize<TaskInstance>(
+                    context.Response.OutputStream,
+                    task,
+                    JsonSettings.SerializerOptions
+                );
             }
             catch (InvalidTaskParameterException pex)
             {
-                JsonSerializer.Serialize(context.Response.OutputStream, new { Error = true, ExceptionType = pex.GetType().Name, Exception = pex.Message, StackTrace = pex.StackTrace });
+                JsonSerializer.Serialize(
+                    context.Response.OutputStream,
+                    new {
+                        Error = true,
+                        ExceptionType = pex.GetType().Name,
+                        Exception = pex.Message,
+                        StackTrace = pex.StackTrace
+                    },
+                    JsonSettings.SerializerOptions);
             }
             catch (Exception ex)
             {
                 // todo: return generic error if debug mode disabled
-                JsonSerializer.Serialize(context.Response.OutputStream, new { Error = true, ExceptionType = ex.GetType().Name, Exception = ex.Message, StackTrace = ex.StackTrace });
+                JsonSerializer.Serialize(
+                    context.Response.OutputStream, 
+                    new {
+                        Error = true,
+                        ExceptionType = ex.GetType().Name,
+                        Exception = ex.Message,
+                        StackTrace = ex.StackTrace
+                    },
+                    JsonSettings.SerializerOptions);
             }
             context.Response.OutputStream.Flush();
             context.Response.Close();

@@ -24,7 +24,11 @@ namespace Overmind.Web
             ILog _log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod()?.DeclaringType);
             _log.Info($"[{System.Reflection.MethodBase.GetCurrentMethod()?.Name}] Handling dispatched request: {context.Request.RawUrl}");
 
-            JsonSerializer.Serialize<OvermindConfig>(context.Response.OutputStream, Program.Config);
+            JsonSerializer.Serialize<OvermindConfig>(
+                context.Response.OutputStream,
+                Program.Config,
+                JsonSettings.SerializerOptions
+            );
             context.Response.OutputStream.Flush();
             context.Response.Close();
         }

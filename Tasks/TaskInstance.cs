@@ -1,3 +1,4 @@
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Text;
 using System.Text.Json.Serialization;
@@ -9,23 +10,29 @@ namespace Overmind.Tasks
 {
     class TaskInstance
     {
-        private Process _process;
+        private readonly Process _process;
+        private readonly ReadOnlyDictionary<string, string> _parameters;
 
         [JsonIgnore]
         public TaskConfig Config { get; private set; }
-
+        
         public Guid Id { get; private set; }
         public DateTime StartTime { get; private set; }
         public DateTime? EndTime { get; private set; }
         public int ProcessId { get { return _process.Id; } }
         public int? PlatformExitCode { get; private set; }
         public TaskStatus Status { get; private set; }
+        public string? TaskName { get => Config?.Name; }
+        public ReadOnlyDictionary<string, string> Parameters { get => _parameters; }
 
         public TaskInstance(TaskConfig config, Dictionary<string, string> parameters)
         {
             ILog _log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod()?.DeclaringType);
 
             Config = config;
+
+            // copy the parameters list so it can be displayed in status info
+            _parameters = new ReadOnlyDictionary<string, string>(parameters);
 
             // validate parameter names provided from the request
             foreach (KeyValuePair<string, string> parameter in parameters)
