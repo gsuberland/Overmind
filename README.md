@@ -152,7 +152,7 @@ The Overmind configuration file (overmind.json) is parsed into types found in th
 ## Planned Features
 
 - **.NET client library** - Right now it's just a server with a JSON API over HTTP; I'd like to write a .NET client library to consume it.
-- **Completion callbacks** - User-provided URI, likely with some restrictions, to which a HTTP request is sent when the task is completed. This saves polling repeatedly.
+- ~~**Completion callbacks** - User-provided URI, likely with some restrictions, to which a HTTP request is sent when the task is completed. This saves polling repeatedly.~~ A bare bones version of this has been implemented. Documentation pending.
 - **Task cancellation** - Ability to kill a task from the API.
 - **Process information** - Information about the process' runtime (platform dependent) such as memory usage and CPU usage
 - (maybe) **Task chaining** - Ability to specify a chain of tasks to perform one after another.
