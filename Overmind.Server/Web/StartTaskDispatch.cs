@@ -59,7 +59,7 @@ namespace Overmind.Server.Web
 
             // try to start the task!
             TaskInstance task;
-            task = TaskManager.Start(startRequest.Name, startRequest.Parameters);
+            task = TaskManager.Start(startRequest.Name, startRequest.Parameters, startRequest.CallbackUrl);
 
             // we got a task instance, so show it
             context.Response.AddHeader("Location", context.Request.Url.GetLeftPart(UriPartial.Authority) + "/status/" + task.Id.ToString());

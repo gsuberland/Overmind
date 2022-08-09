@@ -25,7 +25,7 @@ namespace Overmind.Server.Tasks
             return null;
         }
 
-        public static TaskInstance Start(string taskName, Dictionary<string, string> parameters)
+        public static TaskInstance Start(string taskName, Dictionary<string, string> parameters, Uri? callbackUrl)
         {
             ILog _log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod()?.DeclaringType);
 
@@ -35,7 +35,7 @@ namespace Overmind.Server.Tasks
                 _log.Error($"[{System.Reflection.MethodBase.GetCurrentMethod()?.Name}] Unknown task '{taskName}'");
                 throw new TaskNotFoundException(taskName);
             }
-            var task = new TaskInstance(taskConfig, parameters);
+            var task = new TaskInstance(taskConfig, parameters, callbackUrl);
             _instances.TryAdd(task.Id, task);
             return task;
         }
