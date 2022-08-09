@@ -26,6 +26,7 @@ namespace Overmind.Server.Tasks
         public OvermindTaskStatus Status { get; private set; }
         public string TaskName { get => Config?.Name ?? throw new InvalidOperationException(); }
         public ReadOnlyDictionary<string, string> Parameters { get => _parameters; }
+        public Uri? CallbackUrl { get; private set; }
 
         public TaskInstanceResponse ToResponse()
         {
@@ -41,11 +42,12 @@ namespace Overmind.Server.Tasks
             );
         }
 
-        public TaskInstance(TaskConfig config, Dictionary<string, string> parameters)
+        public TaskInstance(TaskConfig config, Dictionary<string, string> parameters, Uri? callbackUrl)
         {
             ILog _log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod()?.DeclaringType);
 
             Config = config;
+            CallbackUrl = callbackUrl;
 
             // copy the parameters list so it can be displayed in status info
             _parameters = new ReadOnlyDictionary<string, string>(parameters);
@@ -113,9 +115,10 @@ namespace Overmind.Server.Tasks
             _process.EnableRaisingEvents = true;
             _process.StartInfo = psi;
             _process.Exited += (object? sender, EventArgs args) => {
-                EndTime = DateTime.UtcNow;
-                PlatformExitCode = _process.ExitCode;
-                Status = OvermindTaskStatus.Completed;
+                this.EndTime = DateTime.UtcNow;
+                this.PlatformExitCode = _process.ExitCode;
+                this.Status = OvermindTaskStatus.Completed;
+                this.SendCallback();
             };
             Id = Guid.NewGuid();
             StartTime = DateTime.UtcNow;
@@ -130,6 +133,31 @@ namespace Overmind.Server.Tasks
                 Status = OvermindTaskStatus.Failed;
             }
             Status = OvermindTaskStatus.Running;
+        }
+
+        private void SendCallback()
+        {
+            if (this.CallbackUrl == null)
+            {
+                // callback URL not set, so don't do a callback
+                return;
+            }
+            
+            if ((Program.Config.CallbackDomains?.Length ?? 0) == 0)
+            {
+                // no callback domains have been whitelisted
+                return;
+            }
+
+            bool callbackMatchesWhitelistedDomain = Program.Config.CallbackDomains?.Any(cd => cd.Equals(this.CallbackUrl.Host, StringComparison.OrdinalIgnoreCase)) ?? false;
+            if (!callbackMatchesWhitelistedDomain)
+            {
+                // callback provided by user does not match a whitelisted domain, so don't send anything to it.
+                return;
+            }
+
+            // do the callback!
+            CallbackManager.ScheduleCallback(this);
         }
     }
 }

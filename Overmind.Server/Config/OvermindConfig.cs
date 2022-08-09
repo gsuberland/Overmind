@@ -8,6 +8,7 @@ namespace Overmind.Server.Config
         public string? InstanceName { get; set; }
         public WebServerConfig[]? Servers { get; set; }
         public TaskConfig[]? Tasks { get; set; }
+        public string[]? CallbackDomains { get; set; }
 
         public bool Validate()
         {
